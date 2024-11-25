@@ -28,7 +28,7 @@ class Produit {
      * @var int
      */
     private int $stock;
-    public function __construct($id = null, $nom, $description, $prix, $stock){
+    public function __construct( $nom, $description, $prix, $stock, $id = null){
         $this->id = $id;
         $this->nom = $nom;
         $this->description = $description;
@@ -83,8 +83,6 @@ class Produit {
 
     /**
      * Set the value of description
-     *
-     * @return  self
      */ 
     public function setDescription($description): void
     {
@@ -101,8 +99,6 @@ class Produit {
 
     /**
      * Set the value of prix
-     *
-     * @return  self
      */ 
     public function setPrix($prix): void
     {
@@ -119,15 +115,52 @@ class Produit {
 
     /**
      * Set the value of stock
-     *
-     * @return  self
      */ 
     public function setStock($stock): void
     {
         $this->stock = $stock;
 
     }
+
+
+    /**
+     * @param float $tva 
+     * @return float TTC price 
+     */
+
+    public function getPriceTTC( float $tva) : float 
+    {
+        try {
+            return $this->prix * (1 + $tva / 100);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    /**
+     * @param int $quantite 
+     * @return bool 
+     */
+    public function verifierStock(int $quantite): bool
+    {
+        if($quantite <= $this->stock){
+            return true;
+        }else{
+            return false;
+        }
+    }
+     
 }
 
+$voiture = new Produit(id: 1, nom: "Voiture", description: "Une voiture", prix: 200.0, stock: 3);
 
+
+echo $voiture->getPriceTTC( tva: 20); 
+echo "<br>";
+$isAvailable =  $voiture->verifierStock(quantite: 3);
+if($isAvailable){
+    echo "Produit disponible";
+}
+else{
+    echo "Produit indisponible";
+}
 ?>
