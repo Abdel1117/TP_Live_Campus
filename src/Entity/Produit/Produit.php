@@ -2,17 +2,33 @@
 
 declare(strict_types=1);
 
+/**
+ * Class Produit
+ * @author Abderahmane Adjali 
+ * @Date 25/11/2024
+ */
 class Produit {
-
+    /**
+     * @var int | null 
+     */
     private int $id;
+    /**
+     * @var string
+     */
     private string $nom;
+    /**
+     * @var string
+     */
     private string $description;
-
+    /**
+     * @var float
+     */
     private float $prix;
-
+    /**
+     * @var int
+     */
     private int $stock;
-
-    public function __construct($id, $nom, $description, $prix, $stock){
+    public function __construct($id = null, $nom, $description, $prix, $stock){
         $this->id = $id;
         $this->nom = $nom;
         $this->description = $description;
@@ -23,7 +39,7 @@ class Produit {
     /**
      * Get the value of id
      */ 
-    public function getId()
+    public function getId(): int|null 
     {
         return $this->id;
     }
@@ -33,17 +49,15 @@ class Produit {
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($id): void 
     {
         $this->id = $id;
-
-        return $this;
     }
 
     /**
      * Get the value of nom
      */ 
-    public function getNom()
+    public function getNom(): string
     {
         return $this->nom;
     }
@@ -53,17 +67,16 @@ class Produit {
      *
      * @return  self
      */ 
-    public function setNom($nom)
+    public function setNom($nom): void
     {
         $this->nom = $nom;
 
-        return $this;
     }
 
     /**
      * Get the value of description
      */ 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -73,17 +86,15 @@ class Produit {
      *
      * @return  self
      */ 
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
-
-        return $this;
     }
 
     /**
      * Get the value of prix
      */ 
-    public function getPrix()
+    public function getPrix(): float
     {
         return $this->prix;
     }
@@ -93,17 +104,15 @@ class Produit {
      *
      * @return  self
      */ 
-    public function setPrix($prix)
+    public function setPrix($prix): void
     {
         $this->prix = $prix;
-
-        return $this;
     }
 
     /**
      * Get the value of stock
      */ 
-    public function getStock()
+    public function getStock(): int
     {
         return $this->stock;
     }
@@ -113,11 +122,10 @@ class Produit {
      *
      * @return  self
      */ 
-    public function setStock($stock)
+    public function setStock($stock): void
     {
         $this->stock = $stock;
 
-        return $this;
     }
 }
 
