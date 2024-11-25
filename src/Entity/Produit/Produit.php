@@ -46,8 +46,6 @@ class Produit {
 
     /**
      * Set the value of id
-     *
-     * @return  self
      */ 
     public function setId($id): void 
     {
@@ -64,8 +62,6 @@ class Produit {
 
     /**
      * Set the value of nom
-     *
-     * @return  self
      */ 
     public function setNom($nom): void
     {
