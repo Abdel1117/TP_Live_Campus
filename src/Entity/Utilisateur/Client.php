@@ -1,0 +1,100 @@
+<?php
+
+require_once "Panier.php";
+require_once "../Utilisateur/Utilisateur.php";
+/**
+ * Class Client
+ * 
+ * Représente un client avec une adresse de livraison, un panier, et un historique de commandes.
+ */
+class Client extends Utilisateur
+{
+    /**
+     * @var string $adresseLivraison Adresse de livraison du client
+     */
+    private string $adresseLivraison;
+
+    /**
+     * @var Panier $panier Panier du client
+     */
+    private Panier $panier;
+
+
+    /**
+     * Constructeur de la classe Client
+     * 
+     * @param string $adresseLivraison Adresse de livraison du client
+     * @param Panier|null $panier Instance de panier associée au client (par défaut, un nouveau panier)
+     */
+    public function __construct(string $adresseLivraison, ?Panier $panier = null)
+    {
+        $this->adresseLivraison = $adresseLivraison;
+        $this->panier = $panier ?? new Panier(); // Crée un panier par défaut si aucun n'est fourni
+    }
+
+    /**
+     * Crée une commande à partir des articles présents dans le panier.
+     * 
+     * Pour l'instant, cette méthode est vide.
+     * 
+     * @return void
+     */
+    public function passerCommande(): void
+    {
+        // Logique pour créer une commande à partir des articles du panier (vide pour l'instant)
+        echo "Commande créée à partir du panier.\n";
+       
+    }
+    /**
+     * Consultation de l'historique des commandes
+     * @return array
+     */
+    public function consulterHistorique(): array {
+        return [];
+    }
+    /**
+     * Récupère l'adresse de livraison du client.
+     * 
+     * @return string Adresse de livraison
+     */
+    public function getAdresseLivraison(): string
+    {
+        return $this->adresseLivraison;
+    }
+
+    /**
+     * Définit l'adresse de livraison du client.
+     * 
+     * @param string $adresseLivraison Adresse de livraison
+     * @return self Instance de l'objet pour le chaînage
+     */
+    public function setAdresseLivraison(string $adresseLivraison): self
+    {
+        $this->adresseLivraison = $adresseLivraison;
+
+        return $this;
+    }
+
+    /**
+     * Récupère le panier du client.
+     * 
+     * @return Panier Panier du client
+     */
+    public function getPanier(): Panier
+    {
+        return $this->panier;
+    }
+
+    /**
+     * Définit le panier du client.
+     * 
+     * @param Panier $panier Panier à associer au client
+     * @return self Instance de l'objet pour le chaînage
+     */
+    public function setPanier(Panier $panier): self
+    {
+        $this->panier = $panier;
+
+        return $this;
+    }
+}

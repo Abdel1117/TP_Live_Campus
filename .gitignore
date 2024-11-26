@@ -1,0 +1,9 @@
+# Ignorer le dossier vendor
+/vendor/
+
+# Ignorer les fichiers de cache de Composer
+composer.phar
+
+# Facultatif : ignorer composer.lock (pas recommandé)
+# composer.lock
+
