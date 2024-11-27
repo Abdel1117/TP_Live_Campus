@@ -1,14 +1,16 @@
 <?php
-
 declare(strict_types=1);
+
+namespace Tp\Livecampus\Entity\Produit;
+use Tp\Livecampus\Config\ConfigurationManager;
 
 /**
  * Class Produit
  * @author Abderahmane Adjali 
  * @Date 25/11/2024
  */
-class Produit {
-    /**
+abstract class Produit {
+    /**s
      * @var int | null 
      */
     private int $id;
@@ -35,6 +37,16 @@ class Produit {
         $this->prix = $prix;
         $this->stock = $stock;
     }
+    /**
+     * Summary of calculerFraisLivraison
+     * @return float
+     */
+    abstract public function  calculerFraisLivraison():float; 
+    /**
+     * Affiche les détails du produit
+     * @return string 
+     */
+    abstract public function afficherDetails():string;
     
     /**
      * Get the value of id
@@ -127,6 +139,8 @@ class Produit {
     public function getPriceTTC( float $tva) : float 
     {
         try {
+            $tva = ConfigurationManager::getInstance()->get("TVA");
+
             return $this->prix * (1 + $tva / 100);
         } catch (\Throwable $th) {
             throw $th;
@@ -146,17 +160,3 @@ class Produit {
     }
      
 }
-
-$voiture = new Produit(id: 1, nom: "Voiture", description: "Une voiture", prix: 200.0, stock: 3);
-
-
-echo $voiture->getPriceTTC( tva: 20); 
-echo "<br>";
-$isAvailable =  $voiture->verifierStock(quantite: 3);
-if($isAvailable){
-    echo "Produit disponible";
-}
-else{
-    echo "Produit indisponible";
-}
-?>

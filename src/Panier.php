@@ -1,6 +1,6 @@
 <?php
-
-require_once "Produit.php"; // Assurez-vous que la classe Produit est disponible
+namespace Tp\Livecampus;
+use Tp\Livecampus\Entity\Produit\Produit;
 
 /**
  * Class Panier

@@ -1,7 +1,8 @@
 <?php
-
-require_once "Panier.php";
-require_once "../Utilisateur/Utilisateur.php";
+declare(strict_types=1);
+namespace Tp\Livecampus\Entity\Utilisateur;
+use Tp\Livecampus\Entity\Utilisateur\Utilisateur;
+use Tp\Livecampus\Panier;
 /**
  * Class Client
  * 
@@ -26,10 +27,16 @@ class Client extends Utilisateur
      * @param string $adresseLivraison Adresse de livraison du client
      * @param Panier|null $panier Instance de panier associée au client (par défaut, un nouveau panier)
      */
-    public function __construct(string $adresseLivraison, ?Panier $panier = null)
+    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles, $id = null, string $adresseLivraison, ?Panier $panier = null)
     {
+        parent::__construct(nom: $nom, email: $email,  motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles, id: $id);
         $this->adresseLivraison = $adresseLivraison;
-        $this->panier = $panier ?? new Panier(); // Crée un panier par défaut si aucun n'est fourni
+        $this->panier = $panier ?? new Panier(); 
+    }
+    public function afficherRoles(): array{
+        $roles = $this->getRoles();
+
+        return $roles;
     }
 
     /**

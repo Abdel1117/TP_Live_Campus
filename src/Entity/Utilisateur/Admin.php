@@ -1,5 +1,11 @@
 <?php
-require_once "../Utilisateur/Utilisateur.php";
+declare(strict_types=1);
+
+namespace Tp\Livecampus\Entity\Utilisateur;
+
+use DateTime;
+use Tp\Livecampus\Entity\Utilisateur\Utilisateur;
+
 /**
  * Class Admin
  * 
@@ -28,6 +34,12 @@ class Admin extends Utilisateur
     {
         $this->niveauAcces = $niveauAcces;
         $this->derniereConnexion = $derniereConnexion ?? new DateTime();
+    }
+
+    public function afficherRoles(): array{
+        $roles = $this->getRoles();
+
+        return $roles;
     }
        /**
      * Crée une commande à partir des articles présents dans le panier.

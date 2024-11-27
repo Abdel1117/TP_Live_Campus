@@ -1,6 +1,8 @@
 <?php 
+declare(strict_types=1);
+namespace Tp\Livecampus\Entity\Produit;
+use Tp\Livecampus\Entity\Produit\Produit;
 
-require_once "../Produit/Produit.php";
 
 /**
  * Class ProduitPhysique
@@ -32,13 +34,27 @@ class ProduitPhysique extends Produit
      */
     private float $hauteur;
 
+
+    public function __construct($nom, $description, $prix, $stock,
+    $poids,
+    $longueur,
+    $largeur,
+    $hauteur, $id = null){
+        parent::__construct(nom: $nom,description: $description,prix: $prix,stock: $stock,id: $id);
+        $this->poids = $poids;
+        $this->longueur = $longueur;
+        $this->largeur = $largeur;
+        $this->hauteur = $hauteur;
+       
+    }
+
     /**
      * Affiche les détails principaux du produit physique (poids et longueur). 
-     * @return void
+     * @return string
      */
-    public function afficherDetails(): void
+    public function afficherDetails(): string
     {
-        echo $this->poids . " " . $this->longueur;
+       return $this->poids . " " . $this->longueur;
     }
 
     /**

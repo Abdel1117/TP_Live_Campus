@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
+namespace Tp\Livecampus\Entity\Utilisateur;
 
-require_once "Produit.php";
-require_once "Utilisateur.php";
+use Tp\Livecampus\Entity\Utilisateur\Utilisateur;
+use Tp\Livecampus\Entity\Produit\Produit;
+
 /**
  * Class Vendeur
  * 
@@ -31,10 +34,20 @@ class Vendeur extends Utilisateur
      * @param string $boutique Nom de la boutique
      * @param float $commission Taux de commission
      */
-    public function __construct(string $boutique, float $commission)
+    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles, $id = null,string $boutique, float $commission)
     {
+        parent::__construct(nom: $nom,email: $email, motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles, id: $id);
         $this->boutique = $boutique;
         $this->commission = $commission;
+    }
+
+
+
+
+    public function afficherRoles(): array{
+        $roles = $this->getRoles();
+
+        return $roles;
     }
       /**
      * Crée une commande à partir des articles présents dans le panier.
