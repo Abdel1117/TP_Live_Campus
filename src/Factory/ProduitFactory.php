@@ -12,125 +12,77 @@ use Tp\Livecampus\Entity\Produit\ProduitNumerique;
  */
 class ProduitFactory
 {
+    private static array $registry = [];
+
     /**
-     * Crée un produit en fonction du type spécifié.
+     * Enregistre un type de produit et sa classe correspondante.
      *
-     * @param string $type Le type de produit ("physique", "numerique", "perissable").
-     * @param array $data Les données nécessaires à la création du produit.
-     * @return Produit L'instance de produit créée.
-     * @throws Exception Si le type ou les données sont invalides.
+     * @param string $type Le type de produit (ex. : "physique").
+     * @param string $class La classe associée.
+     * @throws Exception Si la classe n'est pas valide.
      */
-    public function creerProduit(string $type, array $data): Produit
+    public static function register(string $type, string $class): void
     {
-        switch (strtolower($type)) {
-            case 'physique':
-                return $this->creerProduitPhysique($data);
-            case 'numerique':
-                return $this->creerProduitNumerique($data);
-            case 'perissable':
-                return $this->creerProduitPerissable($data);
-            default:
-                throw new Exception("Type de produit invalide : $type");
+        if (!is_subclass_of($class, Produit::class)) {
+            throw new Exception("La classe $class doit hériter de Produit.");
         }
+        self::$registry[strtolower($type)] = $class;
     }
 
     /**
-     * Crée un produit physique.
+     * Crée une instance de produit en fonction de son type.
      *
-     * @param array $data Les données pour le produit physique.
-     * @return ProduitPhysique L'instance de produit physique.
-     * @throws Exception Si les données sont invalides.
+     * @param string $type Le type de produit.
+     * @param array $data Les données nécessaires.
+     * @return Produit L'instance de produit.
+     * @throws Exception Si le type est invalide.
      */
-    private function creerProduitPhysique(array $data): ProduitPhysique
-    {
-        $this->validerDonnees(data: $data, champsRequis: ['nom', 'description', 'prix', 'stock', "poids",
-        "longueur",
-        "largeur",
-        "hauteur"]);
-
-        return new ProduitPhysique(
-            nom: $data['nom'],
-            description: $data['description'],
-            prix: (float)$data['prix'],
-            stock: (int)$data['stock'],
-            poids: $data["poids"],
-            longueur: $data["longueur"],
-            largeur: $data["largeur"],
-            hauteur: $data["hauteur"],
-            id: 23
-        );
+    public static function create(string $type, array $data): Produit{
+    $type = strtolower($type);
+    var_dump($registry);
+    var_dump($type);
+    if (!isset(self::$registry[$type])) {
+        throw new Exception("Type de produit invalide : $type");
     }
 
-    /**
-     * Crée un produit numérique.
-     *
-     * @param array $data Les données pour le produit numérique.
-     * @return ProduitNumerique L'instance de produit numérique.
-     * @throws Exception Si les données sont invalides.
-     */
-    private function creerProduitNumerique(array $data): ProduitNumerique
-    {
-        $this->validerDonnees($data, ['nom', 'description', 'prix',"lienTelechargement",
-        "tailleFichier",
-        "formatFichier"]);
-
-        // Un produit numérique a toujours un stock illimité (par exemple, stock = -1).
-        return new ProduitNumerique(
-            nom: $data['nom'],
-            description: $data['description'],
-            prix: (float)$data['prix'],
-            stock: -1 ,
-            lienTelechargement: $data["lienTelechargement"],
-            tailleFichier: $data["tailleFichier"],
-            formatFichier: $data["formatFichier"],
-            id: 1999
-        );
+    $class = self::$registry[$type];
+    var_dump($data);
+    switch ($type) {
+        case 'numerique':
+            return new $class(
+                $data['nom'],
+                $data['description'],
+                (float) $data['prix'],
+                (int) $data['stock'],
+                $data['lienTelechargement'],
+                (string) $data['tailleFichier'],
+                $data['formatFichier'] ?? null,
+                $data['id'] ?? null
+            );
+        case 'physique':
+            return new $class(
+                $data['nom'],
+                $data['description'],
+                (float) $data['prix'],
+                (int) $data['stock'],
+                (float) $data['poids'],
+                (float) $data['longueur'],
+                (float) $data['largeur'],
+                (float) $data['hauteur'],
+                $data['id'] ?? null
+            );
+        case 'perissable':
+            return new $class(
+                $data['nom'],
+                $data['description'],
+                (float) $data['prix'],
+                (int) $data['stock'],
+                $data['dateExpiration'],
+                (float) $data['temperatureStockage'],
+                $data['id'] ?? null
+            );
+        default:
+            throw new Exception("Type de produit non reconnu.");
     }
-
-    /**
-     * Crée un produit périssable.
-     *
-     * @param array $data Les données pour le produit périssable.
-     * @return ProduitPerissable L'instance de produit périssable.
-     * @throws Exception Si les données sont invalides.
-     */
-    private function creerProduitPerissable(array $data): ProduitPerissable
-    {
-        $this->validerDonnees($data, ['nom', 'description', 'prix', 'stock', 'date_expiration',"temperatureStockage"]);
-
-        $produit = new ProduitPerissable(
-            nom: $data['nom'],
-            description: $data['description'],
-            prix: (float)$data['prix'],
-            stock: (int)$data['stock'],
-            dateExpiration: $data["dateExpiration"],
-            temperatureStockage: $data["temperatureStockage"],
-            id: 199
-        );
-
-        // Ajouter une logique spécifique au produit périssable
-        $dateExp = $produit->getDateExpiration() ;
-        $dateExp = $data['date_expiration']; 
-        return $produit;
-    }
-
-    /**
-     * Valide les données en fonction des champs requis.
-     *
-     * @param array $data Les données à valider.
-     * @param array $champsRequis Les champs requis pour ce type de produit.
-     * @throws Exception Si un champ est manquant ou invalide.
-     */
-    private function validerDonnees(array $data, array $champsRequis): void
-    {
-        foreach ($champsRequis as $champ) {
-            if (!isset($data[$champ])) {
-                throw new Exception("Donnée manquante : $champ");
-            }
-
-            if (empty($data[$champ]) && $data[$champ] !== 0) {
-                throw new Exception("Donnée vide ou invalide pour le champ : $champ");
-            }
-        }
-    }
+}
 }

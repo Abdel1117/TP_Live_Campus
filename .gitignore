@@ -1,6 +1,6 @@
 # Ignorer le dossier vendor
 /vendor/
-
+.env
 # Ignorer les fichiers de cache de Composer
 composer.phar
 

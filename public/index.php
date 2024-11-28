@@ -4,41 +4,34 @@
 
     use Tp\Livecampus\Config\ConfigurationManager;
     use Tp\Livecampus\Entity\Produit\ProduitNumerique;
-    
-    try {
-        // Récupérer l'instance unique
-        $configManager = ConfigurationManager::getInstance();
-    
-        // Charger une configuration personnalisée
-        $configManager->chargerConfiguration([
-            'TVA' => 19.6,
-            'Devise' => 'USD',
-            'FraisLivraison' => 7.5,
-            'EmailContact' => 'support@example.com',
-        ]);
-    
-        // Récupérer des paramètres
-        echo "TVA : " . $configManager->get('TVA') . "%\n";
-        echo "Devise : " . $configManager->get('Devise') . "\n";
-        echo "Frais de livraison : " . $configManager->get('FraisLivraison') . " €\n";
-        echo "Email de contact : " . $configManager->get('EmailContact') . "\n";
-    
-        // Mettre à jour un paramètre
-        $configManager->set('FraisLivraison', 10.0);
-        echo "Nouveaux frais de livraison : " . $configManager->get('FraisLivraison') . " €\n";
-    
-    } catch (Exception $e) {
-        echo "Erreur : " . $e->getMessage();
-    }
-    
-use Tp\Livecampus\Entity\Produit\Produit;
-    
-$produit = new ProduitNumerique(nom: "Voiture", description: "Une belle voiture", prix: 20000.0, stock: 3, lienTelechargement: "fdfsdfsdfsdfsdf",tailleFichier: 39999, formatFichier: "PDF", id: 1);
-echo "<h1>Test</h1>";
+    use Tp\Livecampus\Entity\Produit\ProduitPerissable;
+    use Tp\Livecampus\Entity\Produit\ProduitPhysique;
 
-echo $produit->getNom();
-    
-    
-    
+    use Tp\Livecampus\Factory\ProduitFactory;
+
+    use Tp\Livecampus\Database\DatabaseConnection;
+    use Tp\Livecampus\Repository\ProduitRepository;
+
+    ProduitFactory::register('physique', ProduitPhysique::class);
+    ProduitFactory::register('numerique', ProduitNumerique::class);
+    ProduitFactory::register('perissable', ProduitPerissable::class);
+try {
+    $db = DatabaseConnection::getInstance()->getConnection();
+    echo "Connexion réussie !";
+} catch (PDOException $e) {
+    echo "Erreur : " . $e->getMessage();
+}
+
+$produitNumerique = new ProduitNumerique("Livre Audio", "Une description", 5.99, 5,"https://via.placeholder.com/250", 19.9, "PDF", 1);
+$createProduit = new ProduitRepository();
+$createProduit->read(1);
+
+var_dump($createProduit);
+
+$produitNumerique = new ProduitNumerique("Livre Audio", "Une description", 5.99, 5,"https://via.placeholder.com/250", 19.9, "JPEG", 1);
+$createProduit->update($produitNumerique);
+
+
+$createProduit->read(1);
     
 ?>
