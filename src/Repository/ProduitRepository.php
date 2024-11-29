@@ -22,8 +22,8 @@ class ProduitRepository
 
     public function create(Produit $produit): int
     {
-        $query = "INSERT INTO Produit (nom, description, prix, stock, type, poids, longueur, largeur, hauteur, lienTelechargement, tailleFichier, dateExpiration, temperatureStockage) 
-                  VALUES (:nom, :description, :prix, :stock, :type, :poids, :longueur, :largeur, :hauteur, :lienTelechargement, :tailleFichier, :dateExpiration, :temperatureStockage)";
+        $query = "INSERT INTO Produit (nom, description, prix, stock, type, poids, longueur, largeur, hauteur, lienTelechargement, tailleFichier, formatFichier, dateExpiration, temperatureStockage) 
+                  VALUES (:nom, :description, :prix, :stock, :type, :poids, :longueur, :largeur, :hauteur, :lienTelechargement, :tailleFichier, :formatFichier ,:dateExpiration, :temperatureStockage)";
 
         $stmt = $this->db->prepare($query);
 
@@ -32,7 +32,7 @@ class ProduitRepository
             'description' => $produit->getDescription(),
             'prix' => $produit->getPrix(),
             'stock' => $produit->getStock(),
-            'type' => strtolower((new \ReflectionClass($produit))->getShortName()),            
+            'type' => $produit->getType(),            
             'poids' => $produit instanceof ProduitPhysique ? $produit->getPoids() : null,
             'longueur' => $produit instanceof ProduitPhysique ? $produit->getLongueur() : null,
             'largeur' => $produit instanceof ProduitPhysique ? $produit->getLargeur() : null,
@@ -43,7 +43,7 @@ class ProduitRepository
             'dateExpiration' => $produit instanceof ProduitPerissable ? $produit->getDateExpiration() : null,
             'temperatureStockage' => $produit instanceof ProduitPerissable ? $produit->getTemperatureStockage() : null,
         ];
-
+        var_dump($params);
         $stmt->execute($params);
 
         return (int) $this->db->lastInsertId();
@@ -55,13 +55,11 @@ class ProduitRepository
     $stmt = $this->db->prepare($query);
     $stmt->execute(['id' => $id]);
     $result = $stmt->fetch();
-    var_dump($result);
     if (!$result) {
         return null;
     }
 
     // Créer l'instance via la factory
-    var_dump($result["type"]);
     return ProduitFactory::create($result['type'], $result);
 }
 
@@ -80,7 +78,7 @@ class ProduitRepository
             'description' => $produit->getDescription(),
             'prix' => $produit->getPrix(),
             'stock' => $produit->getStock(),
-            'type' => strtolower((new \ReflectionClass($produit))->getShortName()), 
+            'type' => $produit->getType(),            
             'poids' => $produit instanceof ProduitPhysique ? $produit->getPoids() : null,
             'longueur' => $produit instanceof ProduitPhysique ? $produit->getLongueur() : null,
             'largeur' => $produit instanceof ProduitPhysique ? $produit->getLargeur() : null,
@@ -92,15 +90,17 @@ class ProduitRepository
             'temperatureStockage' => $produit instanceof ProduitPerissable ? $produit->getTemperatureStockage() : null,
         ];
 
-        var_dump($params);
         $stmt->execute($params);
     }
 
     public function delete(int $id): void
     {
+        var_dump($id);
+
         $query = "DELETE FROM Produit WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->execute(['id' => $id]);
+        
     }
 
     public function findAll(): array

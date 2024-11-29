@@ -20,6 +20,11 @@ class Admin extends Utilisateur
     private int $niveauAcces;
 
     /**
+     * Type User
+     * @var string
+     */
+    protected string $type = "Admin";
+    /**
      * @var DateTime $derniereConnexion Date et heure de la dernière connexion de l'administrateur
      */
     private DateTime $derniereConnexion;
@@ -30,8 +35,10 @@ class Admin extends Utilisateur
      * @param int $niveauAcces Niveau d'accès de l'administrateur
      * @param DateTime|null $derniereConnexion Date de la dernière connexion (par défaut, maintenant)
      */
-    public function __construct(int $niveauAcces, ?DateTime $derniereConnexion = null)
-    {
+    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles,
+    int $niveauAcces, ?DateTime $derniereConnexion = null, $id = null)
+    {   
+        parent::__construct(nom: $nom,  email: $email, motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles, id:  $id);
         $this->niveauAcces = $niveauAcces;
         $this->derniereConnexion = $derniereConnexion ?? new DateTime();
     }

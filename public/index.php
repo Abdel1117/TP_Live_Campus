@@ -2,19 +2,20 @@
     
     require_once '../vendor/autoload.php';
 
-    use Tp\Livecampus\Config\ConfigurationManager;
-    use Tp\Livecampus\Entity\Produit\ProduitNumerique;
-    use Tp\Livecampus\Entity\Produit\ProduitPerissable;
-    use Tp\Livecampus\Entity\Produit\ProduitPhysique;
-
-    use Tp\Livecampus\Factory\ProduitFactory;
+  
 
     use Tp\Livecampus\Database\DatabaseConnection;
-    use Tp\Livecampus\Repository\ProduitRepository;
+    use Tp\Livecampus\Entity\Category\Category;
+    use Tp\Livecampus\Factory\CategoryFactory;
+    use Tp\Livecampus\Repository\CategorieRepository;
+    use Tp\Livecampus\Entity\Utilisateur\Admin;
+    use Tp\Livecampus\Entity\Utilisateur\Client;
+    use Tp\Livecampus\Entity\Utilisateur\Vendeur;
+    use Tp\Livecampus\Factory\UserFactory;
+    use Tp\Livecampus\Panier;
+    use Tp\Livecampus\Repository\UtilisateurRepository;
 
-    ProduitFactory::register('physique', ProduitPhysique::class);
-    ProduitFactory::register('numerique', ProduitNumerique::class);
-    ProduitFactory::register('perissable', ProduitPerissable::class);
+
 try {
     $db = DatabaseConnection::getInstance()->getConnection();
     echo "Connexion réussie !";
@@ -22,16 +23,36 @@ try {
     echo "Erreur : " . $e->getMessage();
 }
 
-$produitNumerique = new ProduitNumerique("Livre Audio", "Une description", 5.99, 5,"https://via.placeholder.com/250", 19.9, "PDF", 1);
-$createProduit = new ProduitRepository();
-$createProduit->read(1);
 
-var_dump($createProduit);
-
-$produitNumerique = new ProduitNumerique("Livre Audio", "Une description", 5.99, 5,"https://via.placeholder.com/250", 19.9, "JPEG", 1);
-$createProduit->update($produitNumerique);
+try{
 
 
-$createProduit->read(1);
+    UserFactory::register(type: "client", class: Client::class);
+    UserFactory::register(type: "admin", class: Admin::class);
+    UserFactory::register(type: "vendeur", class: Vendeur::class);
+    $data = [
+        "nom" => "Abdel",
+        "email" => "Abdel.pp@gmail.com",
+        "motDePasse" => "Tp_LiveCampus2024",
+        "dateInscritpion" => new DateTime("now"),
+        "roles" => ["client"],
+        "adresseLivraison" => "1 avenue jean jaures",
+        "panier" => new Panier(),
+        "id" => 1,
+        "TYPE" => "client",
+    ];
     
+    $user = UserFactory::create( $data["TYPE"],data: $data);
+    $creationUser = new UtilisateurRepository();
+    $creationUser->create($user);
+    $result = $creationUser->findAll();
+    var_dump($result);
+
+}catch(Exception $e){
+    echo $e ;
+}
+
+
+
+
 ?>

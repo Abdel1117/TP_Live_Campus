@@ -3,9 +3,7 @@
 namespace Tp\Livecampus\Factory;
 use Tp\Livecampus\Entity\Produit\Produit;
 use Exception;
-use Tp\Livecampus\Entity\Produit\ProduitPhysique;
-use Tp\Livecampus\Entity\Produit\ProduitPerissable;
-use Tp\Livecampus\Entity\Produit\ProduitNumerique;
+
 /**
  * Classe ProduitFactory
  * Crée des instances de Produit en fonction du type spécifié.
@@ -39,47 +37,46 @@ class ProduitFactory
      */
     public static function create(string $type, array $data): Produit{
     $type = strtolower($type);
-    var_dump($registry);
-    var_dump($type);
+   
     if (!isset(self::$registry[$type])) {
         throw new Exception("Type de produit invalide : $type");
     }
 
     $class = self::$registry[$type];
-    var_dump($data);
+    
     switch ($type) {
         case 'numerique':
             return new $class(
                 $data['nom'],
                 $data['description'],
-                (float) $data['prix'],
+                $data['prix'] = (float) $data['prix'],
                 (int) $data['stock'],
                 $data['lienTelechargement'],
                 (string) $data['tailleFichier'],
                 $data['formatFichier'] ?? null,
-                $data['id'] ?? null
+                $data['id'] ?? null,
             );
         case 'physique':
             return new $class(
                 $data['nom'],
                 $data['description'],
-                (float) $data['prix'],
+                $data['prix'] = (float) $data['prix'],
                 (int) $data['stock'],
                 (float) $data['poids'],
                 (float) $data['longueur'],
                 (float) $data['largeur'],
                 (float) $data['hauteur'],
-                $data['id'] ?? null
+                $data['id'] ?? null,
             );
         case 'perissable':
             return new $class(
                 $data['nom'],
                 $data['description'],
-                (float) $data['prix'],
+                $data["prix"] = (float) $data["prix"],
                 (int) $data['stock'],
                 $data['dateExpiration'],
                 (float) $data['temperatureStockage'],
-                $data['id'] ?? null
+                $data['id'] ?? null,
             );
         default:
             throw new Exception("Type de produit non reconnu.");

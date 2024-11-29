@@ -8,6 +8,7 @@ class ProduitNumerique extends Produit{
     private string $lienTelechargement;
     private float $tailleFichier ;
     private string $formatFichier;
+    protected string $type = "numerique";
 
 
     public function __construct(

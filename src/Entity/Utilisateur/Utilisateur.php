@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace Tp\Livecampus\Entity\Utilisateur;
 
 use DateTime;
 
-declare(strict_types=1);
 
 /**
  * Class Utilisateur
@@ -21,18 +22,20 @@ abstract class Utilisateur
     private string $motDePasse ;
     private DateTime $dateInscritpion;
 
+    protected string $type = "Utilisateur";
     protected array $roles = [];
     public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles, $id = null){
         $this->nom = $nom ;
-        $this->id = $id ;
         $this->email = $email ;
         $this->motDePasse = $motDePasse ;
         $this->dateInscritpion = $dateInscritpion ;
         if (is_string(value: $roles)) {
             $roles = [$roles]; 
         }
-
-        $this->roles = array_unique(array_merge($this->roles, $roles));     }
+        
+        $this->roles = array_unique(array_merge($this->roles, $roles));     
+        $this->id = $id ;
+    }
 
     public abstract function afficherRoles() : array;
 
@@ -140,6 +143,27 @@ abstract class Utilisateur
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of type
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set the value of type
+     *
+     * @return  self
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

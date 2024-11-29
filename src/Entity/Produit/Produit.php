@@ -30,6 +30,9 @@ abstract class Produit {
      * @var int
      */
     private int $stock;
+
+    protected string $type = "";
+
     public function __construct( $nom, $description, $prix, $stock, $id = null){
         $this->id = $id;
         $this->nom = $nom;
@@ -159,4 +162,24 @@ abstract class Produit {
         }
     }
      
+
+    /**
+     * Get the value of type
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set the value of type
+     *
+     * @return  self
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 }

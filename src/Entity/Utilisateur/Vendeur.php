@@ -28,13 +28,15 @@ class Vendeur extends Utilisateur
      */
     private array $produits = [];
 
+
+    protected string $type = "Vendeur";
     /**
      * Constructeur de la classe Vendeur
      * 
      * @param string $boutique Nom de la boutique
      * @param float $commission Taux de commission
      */
-    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles, $id = null,string $boutique, float $commission)
+    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles,string $boutique, float $commission , $id = null)
     {
         parent::__construct(nom: $nom,email: $email, motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles, id: $id);
         $this->boutique = $boutique;

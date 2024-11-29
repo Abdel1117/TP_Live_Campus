@@ -34,6 +34,7 @@ class ProduitPhysique extends Produit
      */
     private float $hauteur;
 
+    protected string $type = "physique";
 
     public function __construct($nom, $description, $prix, $stock,
     $poids,

@@ -8,6 +8,7 @@ use Tp\Livecampus\Entity\Produit\Produit;
 class ProduitPerissable extends Produit{
     private DateTime $dateExpiration;
     private float $temperatureStockage;
+    protected string $type = "perissable";
 
     public function __construct(
         string $nom,

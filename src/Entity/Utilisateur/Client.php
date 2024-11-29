@@ -20,16 +20,16 @@ class Client extends Utilisateur
      */
     private Panier $panier;
 
-
+    protected string $type = "Client";
     /**
      * Constructeur de la classe Client
      * 
      * @param string $adresseLivraison Adresse de livraison du client
      * @param Panier|null $panier Instance de panier associée au client (par défaut, un nouveau panier)
      */
-    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles, $id = null, string $adresseLivraison, ?Panier $panier = null)
+    public function __construct($nom,  $email, $motDePasse, $dateInscritpion, $roles ,$adresseLivraison = null, ?Panier $panier = null , $id = null)
     {
-        parent::__construct(nom: $nom, email: $email,  motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles, id: $id);
+        parent::__construct(nom: $nom, email: $email,  motDePasse: $motDePasse, dateInscritpion: $dateInscritpion, roles: $roles,  id: $id);
         $this->adresseLivraison = $adresseLivraison;
         $this->panier = $panier ?? new Panier(); 
     }
