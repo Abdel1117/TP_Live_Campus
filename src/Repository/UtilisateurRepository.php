@@ -26,7 +26,7 @@ class UtilisateurRepository{
         $params = [
             "nom" => $utilisateur->getNom() ,
             "email" => $utilisateur->getEmail(),
-            "motDePasse" => $utilisateur->getMotDePasse(),
+            "motDePasse" => password_hash($utilisateur->getMotDePasse(),PASSWORD_DEFAULT),
             "dateInscription" => $utilisateur->getDateInscritpion()->format("Y-m-d H:i:s"),
             "TYPE" => $utilisateur->getType(),
             "adresseLivraison" => $utilisateur instanceof Client ?  $utilisateur->getAdresseLivraison() : null,
@@ -56,15 +56,14 @@ class UtilisateurRepository{
     }
     public function update(Utilisateur $utilisateur): void{
 
-        $query = "UPDATE utilisateur SET nom = :nom, email = :email, motDePasse = :motDePasse, dateInscritpion = :dateInscritpion, TYPE = :TYPE, adresseLivraison = :adresseLivraison, boutique = :boutique, commission = :commission, niveauAcces = :niveauAcces, derniereConnexion = :derniereConnexion"; 
+        $query = "UPDATE utilisateur SET nom = :nom, email = :email, motDePasse = :motDePasse, dateInscription = :dateInscription, TYPE = :TYPE, adresseLivraison = :adresseLivraison, boutique = :boutique, commission = :commission, niveauAcces = :niveauAcces, derniereConnexion = :derniereConnexion"; 
         $stmt = $this->db->prepare($query);
-
+        
         $params = [
             "nom" => $utilisateur->getNom() ,
-            "id" => $utilisateur->getId(),
             "email" => $utilisateur->getEmail(),
-            "motDePasse" => $utilisateur->getMotDePasse(),
-            "dateInscritpion" => $utilisateur->getDateInscritpion(),
+            "motDePasse" => password_hash($utilisateur->getMotDePasse(),PASSWORD_DEFAULT),
+            "dateInscription" => $utilisateur->getDateInscritpion()->format("Y-m-d H:i:s"),
             "TYPE" => $utilisateur->getType(),
             "adresseLivraison" => $utilisateur instanceof Client ?  $utilisateur->getAdresseLivraison() : null,
             "boutique" => $utilisateur instanceof Vendeur ? $utilisateur->getBoutique() : null,
@@ -78,7 +77,6 @@ class UtilisateurRepository{
 
     public function delete(int $id): void
     {
-        var_dump($id);
 
         $query = "DELETE FROM utilisateur WHERE id = :id";
         $stmt = $this->db->prepare($query);
@@ -91,7 +89,7 @@ class UtilisateurRepository{
         $query = "SELECT * FROM utilisateur";
         $stmt = $this->db->query($query);
         $results = $stmt->fetchAll();
-    
+        
         // Utilisation de la factory pour créer chaque produit
         return array_map(fn($result) => UserFactory::create( $result['TYPE'], $result), $results);
     }

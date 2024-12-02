@@ -42,11 +42,13 @@ try{
         "TYPE" => "client",
     ];
     
-    $user = UserFactory::create( $data["TYPE"],data: $data);
+   /*  $user = UserFactory::create( $data["TYPE"],data: $data) */;
     $creationUser = new UtilisateurRepository();
-    $creationUser->create($user);
-    $result = $creationUser->findAll();
-    var_dump($result);
+    
+
+    $data["nom"] = "Pablo";
+    $usr = UserFactory::create($data["TYPE"], $data);
+    $creationUser->delete(1);
 
 }catch(Exception $e){
     echo $e ;
